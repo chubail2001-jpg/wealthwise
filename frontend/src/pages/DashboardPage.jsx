@@ -20,9 +20,10 @@ function sumType(txs, type, monthStart, monthEnd) {
 
 export default function DashboardPage() {
   const navigate = useNavigate();
-  const [transactions, setTransactions] = useState([]);
-  const [showModal,    setShowModal]    = useState(false);
-  const [loading,      setLoading]      = useState(true);
+  const [transactions,    setTransactions]    = useState([]);
+  const [showModal,       setShowModal]       = useState(false);
+  const [showInvestModal, setShowInvestModal] = useState(false);
+  const [loading,         setLoading]         = useState(true);
 
   const load = async () => {
     try {
@@ -53,14 +54,17 @@ export default function DashboardPage() {
           <h2 className="page-title">Dashboard</h2>
           <p className="page-date">{dateStr}</p>
         </div>
-        <button className="btn-add" onClick={() => setShowModal(true)}>+ Add Transaction</button>
+        <div style={{ display: 'flex', gap: 10 }}>
+          <button className="btn-invest" onClick={() => setShowInvestModal(true)}>⚡ Quick Invest</button>
+          <button className="btn-add"    onClick={() => setShowModal(true)}>+ Add Transaction</button>
+        </div>
       </header>
 
       <div className="stat-grid">
-        <StatCard label="Total Income"  value={fmt(income)}     type="income"  tag="this month" />
-        <StatCard label="Expenses"      value={fmt(expense)}    type="expense" tag="this month" />
-        <StatCard label="Savings"       value={fmt(saving)}     type="saving"  tag="this month" />
-        <StatCard label="Investments"   value={fmt(investment)} type="invest"  tag="this month" />
+        <StatCard label="Total Income"  value={fmt(income)}           type="income"  tag="this month" />
+        <StatCard label="Expenses"      value={fmt(expense)}          type="expense" tag="this month" />
+        <StatCard label="Net Savings"   value={fmt(income - expense - investment)} type="saving"  tag="income − expenses − investments" />
+        <StatCard label="Investments"   value={fmt(investment)}       type="invest"  tag="this month" />
       </div>
 
       {!loading && (
@@ -90,6 +94,14 @@ export default function DashboardPage() {
         <TransactionModal
           onClose={() => setShowModal(false)}
           onSaved={() => { setShowModal(false); load(); }}
+        />
+      )}
+      {showInvestModal && (
+        <TransactionModal
+          initialType="INVESTMENT"
+          balanceHint={income - expense}
+          onClose={() => setShowInvestModal(false)}
+          onSaved={() => { setShowInvestModal(false); load(); }}
         />
       )}
     </div>
