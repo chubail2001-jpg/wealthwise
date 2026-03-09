@@ -1,0 +1,8 @@
+com\wealthwise\security\JwtUtilsTest.class
+com\wealthwise\service\DashboardServiceTest.class
+com\wealthwise\service\NotificationServiceTest.class
+com\wealthwise\service\TransactionServiceTest.class
+com\wealthwise\controller\TransactionControllerTest.class
+com\wealthwise\service\GoalServiceTest.class
+com\wealthwise\controller\GoalControllerTest.class
+com\wealthwise\controller\AuthControllerTest.class
