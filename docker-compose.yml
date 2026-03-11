@@ -1,0 +1,20 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    volumes:
+      - wealthwise-data:/app/data
+    environment:
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in a .env file — must be 64+ characters}
+      CORS_ORIGINS: http://localhost
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  wealthwise-data:
